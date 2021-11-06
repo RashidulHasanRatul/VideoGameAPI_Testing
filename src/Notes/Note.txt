@@ -1,0 +1,1 @@
+Goto to Video Game Project Folder And Run Command == gradlew bootRun
