@@ -1,15 +1,19 @@
 package TestCases;
 
 import static io.restassured.RestAssured.given;
+
+import com.google.gson.JsonParseException;
+import io.restassured.response.Response;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class Tc02_AddNewVideoGameToTheDB {
 
     @Test
-
-    public void addVideoGameToDB(){
+    public void addVideoGameToDB()  throws JsonParseException, IOException {
 
         HashMap<String, String> data = new HashMap<>();
 
@@ -22,16 +26,21 @@ public class Tc02_AddNewVideoGameToTheDB {
         data.put("category","Adventure");
         data.put("rating","Universal");
 
-        given().contentType("Application/json")
+       Response res =  given().contentType("application/json")
                 .body(data)
                 .when()
-                .post()
+                .post("http://localhost:8080/app/videogames")
                 .then()
                 .statusCode(200)
                 .log()
                 .body()
                 .extract()
                 .response();
+
+
+      String jsonString =  res.asString();
+
+        Assert.assertTrue(jsonString.contains("Record Added Successfully"));
 
 
 
